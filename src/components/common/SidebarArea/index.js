@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-class index extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+class SidebarArea extends Component {
     render() {
         return (
             <div className="col-xs-4 sidenav">
-                <ul className="nav nav-pills nav-stacked">
-                    <li className="active"><a href="#section1">Home</a></li>
-                    <li><a href="#section2">Friends</a></li>
-                    <li><a href="#section3">Family</a></li>
-                    <li><a href="#section3">Photos</a></li>
-                </ul>
+                {
+                    this.props.notes.map(note => <h3>{note.title}</h3>)
+                }
             </div>
         );
     }
 }
 
-export default index;
+const mapStateToProps = ({ notes }) => ({
+    notes
+})
+export default connect(mapStateToProps)(SidebarArea);

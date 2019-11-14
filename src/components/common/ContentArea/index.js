@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import DraftEditor from '../DraftEditor';
+import { connect } from 'react-redux';
 
-class index extends Component {
+class ContentArea extends Component {
     render() {
         return (
             <div className="col-xs-8">
@@ -11,4 +12,5 @@ class index extends Component {
     }
 }
 
-export default index;
+
+export default connect(null)(ContentArea);
