@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import DraftEditor from '../DraftEditor';
-import { connect } from 'react-redux';
 
 class ContentArea extends Component {
     render() {
@@ -12,5 +11,4 @@ class ContentArea extends Component {
     }
 }
 
-
-export default connect(null)(ContentArea);
+export default ContentArea

@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { selectedNote } from '../../../store/actions/notes';
 
 class SidebarArea extends Component {
+
+    changeSelectedNote = (data) => {
+        this.props.selectedNote(data)
+    }
+
+    renderNotes() {
+        return this.props.notes.map(note => <h3 onClick={() => this.changeSelectedNote(note)}>{note.title}</h3>)
+
+    }
+
     render() {
         return (
             <div className="col-xs-4 sidenav">
                 {
-                    this.props.notes.map(note => <h3>{note.title}</h3>)
+                    this.renderNotes()
                 }
             </div>
         );
@@ -14,6 +25,11 @@ class SidebarArea extends Component {
 }
 
 const mapStateToProps = ({ notes }) => ({
-    notes
+    notes: notes.data
 })
-export default connect(mapStateToProps)(SidebarArea);
+
+const mapDispatchToProps = dispatch => ({
+    selectedNote: (data) => dispatch(selectedNote(data))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarArea);
+

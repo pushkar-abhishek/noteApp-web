@@ -1,7 +1,8 @@
 import {
     CREATE_NOTE,
     EDIT_NOTE,
-    FETCH_NOTES
+    FETCH_NOTES,
+    SELECTED_NOTE
 } from '../constants/notes';
 
 
@@ -17,4 +18,9 @@ export const editNote = data => ({
 
 export const fetchNotes = () => ({
     type: FETCH_NOTES
+})
+
+export const selectedNote = (data) => ({
+    type: SELECTED_NOTE,
+    payload: data
 })

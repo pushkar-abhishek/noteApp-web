@@ -1,10 +1,24 @@
 import React from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
+import StyleButton from './StyleButton';
+import { connect } from 'react-redux';
+import { stateFromHTML } from 'draft-js-import-html';
+import { createNote } from '../../../store/actions/notes';
+
+function updateState() {
+    const data = stateFromHTML(`<h1>${this.props.selectedNote.title}</h1>`);
+    this.setState({
+        editorState: EditorState.createWithContent(data),
+    });
+}
 
 class RichEditorExample extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { editorState: EditorState.createEmpty() };
+        this.state = {
+            selectedNote: {},
+            editorState: EditorState.createWithContent(stateFromHTML('<h1>ketan</h1>'))
+        };
 
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => this.setState({ editorState });
@@ -13,6 +27,14 @@ class RichEditorExample extends React.Component {
         this.onTab = (e) => this._onTab(e);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+        // this.updateState = this.updateState.bind(this)
+    }
+
+    componentDidMount() {
+        this.props.createNote({
+            id: 2,
+            title: "new note"
+        })
     }
 
     _handleKeyCommand(command) {
@@ -48,9 +70,24 @@ class RichEditorExample extends React.Component {
         );
     }
 
+
+
+    static getDerivedStateFromProps(props, state) {
+        // updateState()
+        if (props.selectedNote.id !== state.selectedNote.id) {
+            const data = stateFromHTML(`<h1>${props.selectedNote.title}</h1>`);
+            return {
+                selectedNote: props.selectedNote,
+                editorState: EditorState.createWithContent(data),
+            }
+        }
+        else return null
+    }
+
     render() {
         const { editorState } = this.state;
-        // console.log(editorState)
+        // console.log(editorState.getCurrentContent().getPlainText())
+
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';
@@ -79,7 +116,7 @@ class RichEditorExample extends React.Component {
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
                         onTab={this.onTab}
-                        placeholder="Tell a story..."
+                        placeholder="enter note"
                         ref="editor"
                         spellCheck={true}
                     />
@@ -106,28 +143,7 @@ function getBlockStyle(block) {
     }
 }
 
-class StyleButton extends React.Component {
-    constructor() {
-        super();
-        this.onToggle = (e) => {
-            e.preventDefault();
-            this.props.onToggle(this.props.style);
-        };
-    }
 
-    render() {
-        let className = 'RichEditor-styleButton';
-        if (this.props.active) {
-            className += ' RichEditor-activeButton';
-        }
-
-        return (
-            <span className={className} onMouseDown={this.onToggle}>
-                {this.props.label}
-            </span>
-        );
-    }
-}
 
 const BLOCK_TYPES = [
     { label: 'H1', style: 'header-one' },
@@ -189,4 +205,12 @@ const InlineStyleControls = (props) => {
     );
 };
 
-export default RichEditorExample
+const mapStateToProps = ({ notes }) => ({
+    selectedNote: notes.selectedNote || {}
+})
+
+const mapDispatchToProps = dispatch => ({
+    createNote: (data) => dispatch(createNote(data)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RichEditorExample)
