@@ -9,7 +9,12 @@ class SidebarArea extends Component {
     }
 
     renderNotes() {
-        return this.props.notes.map(note => <h3 onClick={() => this.changeSelectedNote(note)}>{note.title}</h3>)
+        return this.props.notes.map(note => (
+            <div>
+                <h3 onClick={() => this.changeSelectedNote(note)}>{note.title}</h3>
+            </div>
+        )
+        )
 
     }
 

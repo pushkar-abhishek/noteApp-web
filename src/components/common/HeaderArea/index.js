@@ -9,13 +9,12 @@ class index extends Component {
         return (
             <nav className="navbar">
                 <div className="navbar-header">
-                    <a className="navbar-brand" href="#">WebSiteName</a>
+                    <h3 className="navbar-brand" href="#">Notes</h3>
                 </div>
 
                 <ul className="nav navbar-nav navbar-righ">
-                    <li><button>create</button></li>
+                    <button type="button" className="btn btn-outline-primary">+Create</button>
                 </ul>
-
             </nav>
         );
     }

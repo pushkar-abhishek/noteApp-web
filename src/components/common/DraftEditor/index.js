@@ -1,16 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import StyleButton from './StyleButton';
 import { connect } from 'react-redux';
 import { stateFromHTML } from 'draft-js-import-html';
 import { createNote } from '../../../store/actions/notes';
-
-function updateState() {
-    const data = stateFromHTML(`<h1>${this.props.selectedNote.title}</h1>`);
-    this.setState({
-        editorState: EditorState.createWithContent(data),
-    });
-}
+import FloatingButton from '../other/FloatingButton';
 
 class RichEditorExample extends React.Component {
     constructor(props) {
@@ -30,7 +24,7 @@ class RichEditorExample extends React.Component {
         // this.updateState = this.updateState.bind(this)
     }
 
-    componentDidMount() {
+    handleCreateNote = (data) => {
         this.props.createNote({
             id: 2,
             title: "new note"
@@ -99,29 +93,33 @@ class RichEditorExample extends React.Component {
         }
 
         return (
-            <div className="RichEditor-root">
-                <BlockStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleBlockType}
-                />
-                <InlineStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleInlineStyle}
-                />
-                <div className={className} onClick={this.focus}>
-                    <Editor
-                        blockStyleFn={getBlockStyle}
-                        customStyleMap={styleMap}
+            <Fragment>
+                <div className="RichEditor-root">
+                    <h1>{this.props.selectedNote.title || ""}</h1>
+                    <BlockStyleControls
                         editorState={editorState}
-                        handleKeyCommand={this.handleKeyCommand}
-                        onChange={this.onChange}
-                        onTab={this.onTab}
-                        placeholder="enter note"
-                        ref="editor"
-                        spellCheck={true}
+                        onToggle={this.toggleBlockType}
                     />
+                    <InlineStyleControls
+                        editorState={editorState}
+                        onToggle={this.toggleInlineStyle}
+                    />
+                    <div className={className} onClick={this.focus}>
+                        <Editor
+                            blockStyleFn={getBlockStyle}
+                            customStyleMap={styleMap}
+                            editorState={editorState}
+                            handleKeyCommand={this.handleKeyCommand}
+                            onChange={this.onChange}
+                            onTab={this.onTab}
+                            placeholder="enter note"
+                            ref="editor"
+                            spellCheck={true}
+                        />
+                    </div>
                 </div>
-            </div>
+                <FloatingButton onClick={this.handleCreateNote} />
+            </Fragment>
         );
     }
 }
