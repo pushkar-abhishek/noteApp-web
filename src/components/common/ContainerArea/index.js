@@ -7,8 +7,10 @@ class index extends Component {
     }
     render() {
         return (
-            <div className="row content">
-                {this.props.children}
+            <div className="content">
+                <div className="row">
+                    {this.props.children}
+                </div>
             </div>
         );
     }

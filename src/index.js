@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import '../src/css/DraftsEditor.css';
-import "bootstrap/dist/css/bootstrap.css";
 import 'draft-js/dist/Draft.css'
 import * as serviceWorker from './serviceWorker';
 

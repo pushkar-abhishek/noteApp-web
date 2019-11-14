@@ -1,40 +1,38 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { selectedNote } from '../../../store/actions/notes';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { selectedNote } from "../../../store/actions/notes";
 
 class SidebarArea extends Component {
+  changeSelectedNote = data => {
+    this.props.selectedNote(data);
+  };
 
-    changeSelectedNote = (data) => {
-        this.props.selectedNote(data)
-    }
+  renderNotes() {
+    return this.props.notes.map(note => (
+      <div className="sideBarItem">
+        <h3 className="name" onClick={() => this.changeSelectedNote(note)}>{note.title}</h3>
+        <i class="fas fa-chevron-circle-right icon"></i>
+      </div>
+    ));
+  }
 
-    renderNotes() {
-        return this.props.notes.map(note => (
-            <div>
-                <h3 onClick={() => this.changeSelectedNote(note)}>{note.title}</h3>
-            </div>
-        )
-        )
-
-    }
-
-    render() {
-        return (
-            <div className="col-xs-4 sidenav">
-                {
-                    this.renderNotes()
-                }
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 padding_hor_0">
+        <div className="sideBar">
+          {this.renderNotes()}
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = ({ notes }) => ({
-    notes: notes.data
-})
+  notes: notes.data
+});
 
 const mapDispatchToProps = dispatch => ({
-    selectedNote: (data) => dispatch(selectedNote(data))
-})
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarArea);
+  selectedNote: data => dispatch(selectedNote(data))
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarArea);
