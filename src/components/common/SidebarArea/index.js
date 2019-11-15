@@ -9,9 +9,9 @@ class SidebarArea extends Component {
 
   renderNotes() {
     return this.props.notes.map(note => (
-      <div className="sideBarItem">
+      <div className="sideBarItem" key={note.id}>
         <h3 className="name" onClick={() => this.changeSelectedNote(note)}>{note.title}</h3>
-        <i class="fas fa-chevron-circle-right icon"></i>
+        <i className="fas fa-chevron-circle-right icon"></i>
       </div>
     ));
   }
