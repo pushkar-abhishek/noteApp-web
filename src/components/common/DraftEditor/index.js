@@ -12,10 +12,9 @@ class RichEditorExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      disableSaveButton: true,
       selectedNote: {},
-      editorState: EditorState.createWithContent(
-        stateFromHTML("<h1>ketan</h1>")
-      )
+      editorState: EditorState.createEmpty()
     };
 
     this.focus = () => this.refs.editor.focus();
@@ -28,8 +27,8 @@ class RichEditorExample extends React.Component {
     // this.updateState = this.updateState.bind(this)
   }
 
-  handleCreateNote = data => {
-    const body = this.state.editorState
+  handleCreateNote = () => {
+    const data = this.state.editorState
       .getCurrentContent()
       .getPlainText("\u0001");
 
@@ -37,7 +36,9 @@ class RichEditorExample extends React.Component {
     // const newNote = { ...selectedNote, title: newtitle, body: "data" };
     const { createNote, editNote } = this.props;
     const { selectedNote } = this.state;
-    selectedNote.body = body;
+    console.log(selectedNote);
+    selectedNote.data = data;
+    selectedNote.title = selectedNote.title || "Untitled";
     if (selectedNote.id) {
       editNote(selectedNote);
       toast.success("Note updated successfully", {});
@@ -46,6 +47,7 @@ class RichEditorExample extends React.Component {
       createNote(selectedNote);
       toast.info("Note created successfully", {});
     }
+    console.log(this.state.selectedNote);
   };
 
   _handleKeyCommand(command) {
@@ -75,17 +77,14 @@ class RichEditorExample extends React.Component {
 
   handleChangeTitle = e => {
     const selectedNote = { ...this.state.selectedNote };
-    console.log(selectedNote);
     selectedNote.title = e.target.value;
-    this.setState({ selectedNote }, () => {
-      console.log(this.state.selectedNote);
-    });
+    this.setState({ selectedNote, disableSaveButton: false });
   };
 
   static getDerivedStateFromProps(props, state) {
     // updateState()
     if (props.selectedNote.id !== state.selectedNote.id) {
-      const data = stateFromHTML(`<h1>${props.selectedNote.title || ""}</h1>`);
+      const data = stateFromHTML(`<h1>${props.selectedNote.data || ""}</h1>`);
       return {
         selectedNote: props.selectedNote,
         editorState: EditorState.createWithContent(data)
@@ -94,7 +93,7 @@ class RichEditorExample extends React.Component {
   }
 
   render() {
-    const { editorState, selectedNote } = this.state;
+    const { editorState, selectedNote, disableSaveButton } = this.state;
     // console.log(editorState.getCurrentContent().getPlainText())
 
     // If the user changes block type before entering any text, we can
@@ -117,9 +116,11 @@ class RichEditorExample extends React.Component {
         <div className="RichEditor-root">
           <input
             type="text"
+            placeholder="enter title"
             value={selectedNote.title || ""}
             onChange={this.handleChangeTitle}
           />
+          <hr />
           <ToastContainer />
           <BlockStyleControls
             editorState={editorState}
@@ -143,7 +144,10 @@ class RichEditorExample extends React.Component {
             />
           </div>
         </div>
-        <FloatingButton onClick={this.handleCreateNote} />
+        <FloatingButton
+          isActive={disableSaveButton}
+          onClick={this.handleCreateNote}
+        />
       </Fragment>
     );
   }

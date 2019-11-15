@@ -8,11 +8,7 @@ import {
 
 const INITIAL_STATE =
 {
-    data: [{
-        id: 1,
-        title: "note title",
-        data: "line1"
-    }],
+    data: [],
     selectedNote: {}
 }
 
