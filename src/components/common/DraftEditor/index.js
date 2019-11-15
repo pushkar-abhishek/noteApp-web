@@ -3,7 +3,7 @@ import { Editor, EditorState, RichUtils } from "draft-js";
 import StyleButton from "./StyleButton";
 import { connect } from "react-redux";
 import { stateFromHTML } from "draft-js-import-html";
-import { createNote } from "../../../store/actions/notes";
+import { createNote, editNote } from "../../../store/actions/notes";
 import FloatingButton from "../other/FloatingButton";
 
 class RichEditorExample extends React.Component {
@@ -31,9 +31,17 @@ class RichEditorExample extends React.Component {
       .getCurrentContent()
       .getPlainText("\u0001");
 
-    const newNote = { ...this.state.selectedNote, title: newtitle };
+    const { selectedNote } = this.state;
+    const newNote = { ...selectedNote, title: newtitle, body: "data" };
+    const { createNote, editNote } = this.props
 
-    this.props.createNote(newNote);
+    if (selectedNote.id) {
+      editNote(newNote)
+    }
+    else {
+      newNote.id = new Date();
+      createNote(newNote)
+    }
   };
 
   _handleKeyCommand(command) {
@@ -207,7 +215,8 @@ const mapStateToProps = ({ notes }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createNote: data => dispatch(createNote(data))
+  createNote: data => dispatch(createNote(data)),
+  editNote: data => dispatch(editNote(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RichEditorExample);

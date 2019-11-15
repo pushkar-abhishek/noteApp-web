@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class index extends Component {
+class ContainerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -16,4 +16,4 @@ class index extends Component {
     }
 }
 
-export default index;
+export default ContainerArea;
