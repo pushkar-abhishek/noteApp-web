@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { Editor, EditorState, RichUtils } from "draft-js";
 import StyleButton from "./StyleButton";
 import { connect } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+
 import { stateFromHTML } from "draft-js-import-html";
 import { createNote, editNote } from "../../../store/actions/notes";
 import FloatingButton from "../other/FloatingButton";
@@ -37,10 +39,13 @@ class RichEditorExample extends React.Component {
 
     if (selectedNote.id) {
       editNote(newNote)
+      toast.success('Note updated successfully', {})
+
     }
     else {
       newNote.id = new Date();
       createNote(newNote)
+      toast.info('Note created successfully', {})
     }
   };
 
@@ -103,6 +108,7 @@ class RichEditorExample extends React.Component {
       <Fragment>
         <div className="RichEditor-root">
           <h1>{this.props.selectedNote.title || ""}</h1>
+          <ToastContainer />
           <BlockStyleControls
             editorState={editorState}
             onToggle={this.toggleBlockType}
