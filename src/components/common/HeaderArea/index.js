@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { unSelectNote } from '../../../store/actions/notes';
 
 class HeaderArea extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
+
+    handleCreateNote = () => {
+        this.props.unSelectNote()
     }
+
     render() {
         return (
             <nav className="navbar">
@@ -13,11 +16,18 @@ class HeaderArea extends Component {
                 </div>
 
                 <ul className="nav navbar-nav navbar-righ">
-                    <button type="button" className="btn btn-outline-primary">+Create</button>
+                    <button
+                        onClick={this.handleCreateNote}
+                        type="button"
+                        className="btn btn-outline-primary">+Create</button>
                 </ul>
             </nav>
         );
     }
 }
 
-export default HeaderArea;
+const mapDispatchToProps = dispatch => ({
+    unSelectNote: () => dispatch(unSelectNote())
+})
+
+export default connect(null, mapDispatchToProps)(HeaderArea);

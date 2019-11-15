@@ -3,9 +3,8 @@ import {
     EDIT_NOTE,
     FETCH_NOTES,
     SELECTED_NOTE,
-    UNSELECTED_NOTE
+    UNSELECT_NOTE
 } from '../constants/notes';
-import { log } from 'util';
 
 const INITIAL_STATE =
 {
@@ -50,9 +49,11 @@ export const notes = (state = INITIAL_STATE, action) => {
                 ...state,
                 selectedNote: action.payload
             }
-
-
-
+        case UNSELECT_NOTE:
+            return {
+                ...state,
+                selectedNote: {}
+            }
         default: return state;
     }
 }

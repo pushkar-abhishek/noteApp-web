@@ -8,5 +8,6 @@ export {
     CREATE_NOTE,
     EDIT_NOTE,
     FETCH_NOTES,
-    SELECTED_NOTE
+    SELECTED_NOTE,
+    UNSELECT_NOTE
 }

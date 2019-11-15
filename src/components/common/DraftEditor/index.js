@@ -72,7 +72,7 @@ class RichEditorExample extends React.Component {
   static getDerivedStateFromProps(props, state) {
     // updateState()
     if (props.selectedNote.id !== state.selectedNote.id) {
-      const data = stateFromHTML(`<h1>${props.selectedNote.title}</h1>`);
+      const data = stateFromHTML(`<h1>${props.selectedNote.title || ""}</h1>`);
       return {
         selectedNote: props.selectedNote,
         editorState: EditorState.createWithContent(data)
